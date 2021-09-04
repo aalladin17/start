@@ -1,0 +1,15 @@
+select P.FirstName, P.LastName, E.HireDate, E.VacationHours, E.JobTitle, D.DepartmentID, EP.Rate, 
+Case
+when E.VacationHours < 20 then 'Take Vacation now'
+when E.VacationHours between 20 and 40 then 'Take soon'
+else 'Take Vacation later'
+end as VacationStatus
+from HumanResources.Employee E
+inner join Person.Person P
+on E.BusinessEntityID = P.BusinessEntityID 
+inner join HumanResources.EmployeeDepartmentHistory D
+on D.BusinessEntityID = P.BusinessEntityID
+inner join HumanResources.EmployeePayHistory EP
+on D.BusinessEntityID = EP.BusinessEntityID
+where HireDate < '2010-1-1'
+order by P.LastName
